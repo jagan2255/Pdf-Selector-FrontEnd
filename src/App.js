@@ -10,6 +10,7 @@ import {
 import Dashboard from './Components/Dashboard/Dashboard';
 import Login from './Components/Login/Login';
 import { useState } from 'react';
+import Signup from './Components/Signup/Signup';
 
 
 function App() {
@@ -32,6 +33,8 @@ function App() {
         <Route path="/" element={<PrivateRoute element={<Dashboard />} />} />
 
         <Route path='/login' element={<Login />} />
+        <Route path='/signup' element={<Signup />} />
+
 
 
       </Routes>

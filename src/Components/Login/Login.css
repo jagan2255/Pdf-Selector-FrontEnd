@@ -1,0 +1,21 @@
+.logindata{
+    min-height: 550px;
+}
+.homw11{
+    margin-top: 8vh;
+    margin-bottom: 8vh;
+}
+.forms123{
+    border: 2px solid rgba(255, 255, 255, 0.64);
+    padding: 40px;
+    width: 350px;
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.299);
+}
+.bbb{
+    background-color: rgba(173, 216, 230, 0.855);
+    /* height: 100vh; */
+}
+.sss{
+    margin-top: 5vh;
+}

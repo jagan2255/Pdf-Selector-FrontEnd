@@ -9,21 +9,33 @@ import {
   from 'react-router-dom';
 import Dashboard from './Components/Dashboard/Dashboard';
 import Login from './Components/Login/Login';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Signup from './Components/Signup/Signup';
 
 
 function App() {
 
+  var token = localStorage.getItem('token')
+  var refreshToken = localStorage.getItem('refreshToken')
   const [isLoggedIn, setLoggedIn] = useState(false);
+  const [isTokenCheckComplete, setTokenCheckComplete] = useState(false);
+
+  useEffect(() => {
+    const checkToken = async () => {
+      console.log('Token:', token);
+      setLoggedIn(!!token);
+      setTokenCheckComplete(true);
+    };
+
+    checkToken();
+  }, [token]);;
 
 
   const PrivateRoute = ({ element }) => {
-    const isAuthenticated = isLoggedIn;
-    if (isAuthenticated) {
-      return element;
+    if (isTokenCheckComplete) {
+      return isLoggedIn ? element : <Navigate to="/login" />;
     } else {
-      return <Navigate to="/login" />;
+      return null;
     }
   };
 

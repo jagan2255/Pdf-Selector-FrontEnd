@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import './Login.css';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { apiurl } from '../Apiconfig/Apiconfig';
 import axios from 'axios';
 
 
 
 function Login() {
-  const history = useNavigate();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -16,13 +15,14 @@ function Login() {
   const [loginError, setLoginError] = useState('');
 
 
-
+  //Check Error In Email Field
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
     setEmailError('');
     setLoginError('')
   };
 
+  //Check Error In Password Field
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
     setPasswordError('');
@@ -30,36 +30,42 @@ function Login() {
   };
 
 
+  //SignIn Handle
   const signin = async (e) => {
     e.preventDefault()
 
-    // Validate name
+    // Validate email
     if (!(email.trim())) {
       setEmailError('Please enter your email.');
       return;
     }
 
+    // Validate password
     if (!password) {
       setPasswordError('Please enter your Password.');
       return;
     }
 
-
+    //Calling LogIn API
     await axios.post(`${apiurl}/api/v1/auth/login`, {
       email: email,
       password: password,
     })
       .then((res) => {
         console.log(res?.data?.message?.code)
-        if (res?.data?.message?.code === "Success") {
 
+        //Data Present In DB Execute This
+        if (res?.data?.message?.code === "Success") {
           console.log(res?.data?.message?.user)
           var token = res?.data?.message?.user?.token
           var refreshToken = res?.data?.message?.user?.refreshToken
+
+          //Save Refresh and Access Token to LocalStoreage
           localStorage.setItem("token", token)
           localStorage.setItem("refreshToken", refreshToken)
-          history("/")
+          window.location.replace("/")
 
+          //User Data Not Found in DB
         } else {
           setLoginError(res?.data?.message?.message)
         }

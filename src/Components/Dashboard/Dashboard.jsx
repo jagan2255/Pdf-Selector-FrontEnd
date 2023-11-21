@@ -13,6 +13,7 @@ function Dashboard() {
   const [totalPages, setTotalPages] = useState(0);
   const [pageInput, setPageInput] = useState('');
   const [sortbtn, setSortbtn] = useState(false)
+  const [error, setError] = useState(null)
 
   var token = localStorage.getItem("token")
 
@@ -20,8 +21,14 @@ function Dashboard() {
   //Handle to Save Selected Pdf and total PageNumber on State
   const onFileUpload = (acceptedFiles) => {
     const file = acceptedFiles[0];
+    if (file.type !== 'application/pdf') {
+      setError('Please upload PDF file Only.');
+      return;
+    }
     setSelectedPdf(URL.createObjectURL(file));
     getTotalPages(file);
+    setError('');
+
   };
 
 
@@ -160,7 +167,10 @@ function Dashboard() {
     }
   };
 
-  const { getRootProps, getInputProps } = useDropzone({ onDrop: onFileUpload });
+  const { getRootProps, getInputProps } = useDropzone({
+    onDrop: onFileUpload,
+    accept: 'application/pdf',
+  });
 
   return (
     <div className='dashboarddata'>
@@ -173,6 +183,7 @@ function Dashboard() {
         </div>
 
       </div>
+      {error ? <div className='text-danger text-center mt-4'>{error}</div> : <div></div>}
       <div className='d-flex justify-content-around mt-5'>
         <div>
           {selectedPdf && (
